@@ -16,9 +16,13 @@
   const nav = qs('#nav');
   const allNavLinks = qsa('[data-section]');
 
-  window.addEventListener('scroll', function () {
-    nav.classList.toggle('scrolled', window.scrollY > 40);
-  });
+  function updateNavState() {
+    var scrollY = window.scrollY;
+    nav.classList.toggle('scrolled', scrollY > 40);
+    nav.classList.toggle('brand-shifted', scrollY > 2);
+  }
+  window.addEventListener('scroll', updateNavState);
+  updateNavState();
 
   /* Active nav + mobile tab bar highlighting on scroll */
   const sections = qsa('section[id]');
