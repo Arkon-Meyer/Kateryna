@@ -133,58 +133,7 @@ a:hover { color: var(--text); }
 .nav__links a:hover::after,
 .nav__links a.active::after { width: 100%; }
 
-/* Hamburger */
-.nav__toggle {
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  gap: 5px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  width: 28px;
-  height: 28px;
-}
-.nav__toggle span {
-  display: block;
-  width: 100%;
-  height: 1.5px;
-  background: var(--text);
-  transition: transform var(--transition-fast), opacity var(--transition-fast);
-}
-.nav__toggle.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
-.nav__toggle.open span:nth-child(2) { opacity: 0; }
-.nav__toggle.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
-
-/* Mobile Overlay */
-.nav-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 999;
-  background: rgba(10, 10, 12, 0.97);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-.nav-overlay.open { opacity: 1; pointer-events: all; }
-.nav-overlay__links {
-  list-style: none;
-  text-align: center;
-}
-.nav-overlay__links li { margin: 1.5rem 0; }
-.nav-overlay__links a {
-  font-family: var(--serif);
-  font-size: 2rem;
-  font-weight: 300;
-  letter-spacing: 0.08em;
-  color: var(--text-muted);
-  transition: color var(--transition-fast);
-}
-.nav-overlay__links a:hover { color: var(--accent); }
+/* (Hamburger + overlay removed — mobile uses bottom tab bar) */
 
 /* ============================================
    HERO / HOME
@@ -482,11 +431,16 @@ a:hover { color: var(--text); }
 .portfolio__item {
   position: relative;
   overflow: hidden;
-  border-radius: 2px;
+  border-radius: 6px;
   cursor: pointer;
   aspect-ratio: 3/4;
   background: var(--bg-card);
-  transition: transform var(--transition), opacity 0.4s ease;
+  transition: transform var(--transition), opacity 0.4s ease, box-shadow var(--transition);
+  border: 1px solid transparent;
+}
+.portfolio__item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(201,168,76,0.1);
 }
 .portfolio__item img {
   width: 100%;
@@ -498,7 +452,7 @@ a:hover { color: var(--text); }
 .portfolio__overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(transparent 40%, rgba(0,0,0,0.85));
+  background: linear-gradient(transparent 30%, rgba(0,0,0,0.9));
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -510,15 +464,21 @@ a:hover { color: var(--text); }
 .portfolio__overlay h3 {
   font-family: var(--serif);
   font-weight: 400;
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   margin-bottom: 0.25rem;
+  transform: translateY(6px);
+  transition: transform 0.4s ease;
 }
+.portfolio__item:hover .portfolio__overlay h3 { transform: translateY(0); }
 .portfolio__overlay span {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   color: var(--accent);
   letter-spacing: 0.1em;
   text-transform: uppercase;
+  transform: translateY(6px);
+  transition: transform 0.4s ease 0.05s;
 }
+.portfolio__item:hover .portfolio__overlay span { transform: translateY(0); }
 .portfolio__item.hiding {
   opacity: 0;
   transform: scale(0.95);
@@ -979,6 +939,58 @@ a:hover { color: var(--text); }
 }
 
 /* ============================================
+   MOBILE BOTTOM TAB BAR (hidden by default, shown at <=768px)
+   ============================================ */
+.mobile-tab-bar {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: rgba(10, 10, 12, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid var(--border);
+  justify-content: space-around;
+  align-items: center;
+  padding: 0.4rem 0 calc(0.4rem + env(safe-area-inset-bottom, 0px));
+  height: auto;
+}
+.mobile-tab-bar__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 0.35rem 0.5rem;
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-family: var(--sans);
+  font-size: 0.6rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+}
+.mobile-tab-bar__item:hover,
+.mobile-tab-bar__item.active {
+  color: var(--accent);
+}
+.mobile-tab-bar__icon {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ============================================
    RESPONSIVE — TABLET
    ============================================ */
 @media (max-width: 1024px) {
@@ -1003,18 +1015,19 @@ a:hover { color: var(--text); }
    RESPONSIVE — MOBILE
    ============================================ */
 @media (max-width: 768px) {
-  /* Nav */
+  /* Nav — hide desktop links, show bottom tab bar */
   .nav { padding: 0 1.25rem; }
   .nav__links { display: none; }
-  .nav__toggle { display: flex; }
+  .mobile-tab-bar { display: flex; }
+
+  /* Hero — hide title (already shown in nav logo) */
+  .hero { padding: 80px 1.25rem 2rem; min-height: 100svh; }
+  .hero__title { display: none; }
+  .hero__tagline { margin-top: 0.5rem; }
 
   /* Gallery switch */
   .gallery3d { display: none; }
   .card-stack { display: block; }
-
-  /* Hero */
-  .hero { padding: 80px 1.25rem 2rem; min-height: 100svh; }
-  .hero__title { margin-bottom: 0.3rem; }
 
   /* Portfolio */
   .portfolio { padding: 4rem 1.25rem; }
@@ -1065,6 +1078,9 @@ a:hover { color: var(--text); }
   /* Contact */
   .contact { padding: 4rem 1.25rem; }
   .contact__links { flex-direction: column; align-items: center; }
+
+  /* Extra bottom padding so content doesn't hide behind tab bar */
+  .footer { padding-bottom: 5rem; }
 
   /* Lightbox */
   .lightbox__nav--prev { left: 0.5rem; }

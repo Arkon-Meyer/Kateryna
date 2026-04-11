@@ -15,9 +15,6 @@
   <!-- Navigation -->
   <nav class="nav" id="nav">
     <a href="#home" class="nav__logo">Katarina Sokolova</a>
-    <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation">
-      <span></span><span></span><span></span>
-    </button>
     <ul class="nav__links" id="navLinks">
       <li><a href="#home" data-section="home">Gallery</a></li>
       <li><a href="#portfolio" data-section="portfolio">Portfolio</a></li>
@@ -27,16 +24,29 @@
     </ul>
   </nav>
 
-  <!-- Mobile Nav Overlay -->
-  <div class="nav-overlay" id="navOverlay">
-    <ul class="nav-overlay__links">
-      <li><a href="#home" data-section="home">Gallery</a></li>
-      <li><a href="#portfolio" data-section="portfolio">Portfolio</a></li>
-      <li><a href="#process" data-section="process">How I Work</a></li>
-      <li><a href="#about" data-section="about">About</a></li>
-      <li><a href="#contact" data-section="contact">Contact</a></li>
-    </ul>
-  </div>
+  <!-- Mobile Bottom Tab Bar -->
+  <nav class="mobile-tab-bar" id="mobileTabBar">
+    <a href="#home" class="mobile-tab-bar__item active" data-section="home">
+      <svg class="mobile-tab-bar__icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      <span>Gallery</span>
+    </a>
+    <a href="#portfolio" class="mobile-tab-bar__item" data-section="portfolio">
+      <svg class="mobile-tab-bar__icon" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="10" y1="2" x2="10" y2="22"/></svg>
+      <span>Works</span>
+    </a>
+    <a href="#process" class="mobile-tab-bar__item" data-section="process">
+      <svg class="mobile-tab-bar__icon" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4z"/></svg>
+      <span>Process</span>
+    </a>
+    <a href="#about" class="mobile-tab-bar__item" data-section="about">
+      <svg class="mobile-tab-bar__icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 10-16 0"/></svg>
+      <span>About</span>
+    </a>
+    <a href="#contact" class="mobile-tab-bar__item" data-section="contact">
+      <svg class="mobile-tab-bar__icon" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      <span>Contact</span>
+    </a>
+  </nav>
 
   <!-- ==================== HOME / GALLERY ==================== -->
   <section class="hero" id="home">

@@ -14,30 +14,15 @@
      NAVIGATION
      ========================================== */
   const nav = qs('#nav');
-  const navToggle = qs('#navToggle');
-  const navOverlay = qs('#navOverlay');
   const allNavLinks = qsa('[data-section]');
 
   window.addEventListener('scroll', function () {
     nav.classList.toggle('scrolled', window.scrollY > 40);
   });
 
-  navToggle.addEventListener('click', function () {
-    navToggle.classList.toggle('open');
-    navOverlay.classList.toggle('open');
-    document.body.style.overflow = navOverlay.classList.contains('open') ? 'hidden' : '';
-  });
-
-  allNavLinks.forEach(function (link) {
-    link.addEventListener('click', function () {
-      navToggle.classList.remove('open');
-      navOverlay.classList.remove('open');
-      document.body.style.overflow = '';
-    });
-  });
-
-  /* Active nav highlighting on scroll */
+  /* Active nav + mobile tab bar highlighting on scroll */
   const sections = qsa('section[id]');
+  var mobileTabItems = qsa('.mobile-tab-bar__item');
   function updateActiveNav() {
     var scrollY = window.scrollY + 120;
     sections.forEach(function (section) {
