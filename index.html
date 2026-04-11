@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Katarina Sokolova — Digital Artist &amp; Illustrator</title>
+  <meta name="description" content="Hand-crafted digital illustration by Katarina Sokolova. Fantasy, editorial, and publishing art. Corel Painter Master 2016.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <a href="#home" class="nav__logo">Katarina Sokolova</a>
+    <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav__links" id="navLinks">
+      <li><a href="#home" data-section="home">Gallery</a></li>
+      <li><a href="#portfolio" data-section="portfolio">Portfolio</a></li>
+      <li><a href="#process" data-section="process">How I Work</a></li>
+      <li><a href="#about" data-section="about">About</a></li>
+      <li><a href="#contact" data-section="contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Mobile Nav Overlay -->
+  <div class="nav-overlay" id="navOverlay">
+    <ul class="nav-overlay__links">
+      <li><a href="#home" data-section="home">Gallery</a></li>
+      <li><a href="#portfolio" data-section="portfolio">Portfolio</a></li>
+      <li><a href="#process" data-section="process">How I Work</a></li>
+      <li><a href="#about" data-section="about">About</a></li>
+      <li><a href="#contact" data-section="contact">Contact</a></li>
+    </ul>
+  </div>
+
+  <!-- ==================== HOME / GALLERY ==================== -->
+  <section class="hero" id="home">
+    <div class="hero__text">
+      <h1 class="hero__title">Katarina Sokolova</h1>
+      <p class="hero__tagline">Hand-crafted digital illustration — fantasy, editorial, publishing</p>
+    </div>
+
+    <!-- Desktop: 3D Gallery -->
+    <div class="gallery3d" id="gallery3d">
+      <div class="gallery3d__scene">
+        <div class="gallery3d__track" id="gallery3dTrack">
+          <div class="gallery3d__item" data-index="0">
+            <div class="gallery3d__frame">
+              <img src="images/gallery-1.svg" alt="Corel Painter Master Award 2016" loading="eager">
+              <div class="gallery3d__caption">Corel Painter Master Award 2016</div>
+            </div>
+          </div>
+          <div class="gallery3d__item" data-index="1">
+            <div class="gallery3d__frame">
+              <img src="images/gallery-2.svg" alt="Red Forest's Fairy Tales" loading="eager">
+              <div class="gallery3d__caption">Red Forest's Fairy Tales</div>
+            </div>
+          </div>
+          <div class="gallery3d__item" data-index="2">
+            <div class="gallery3d__frame">
+              <img src="images/gallery-3.svg" alt="Harley Queen — Corel Painter Master Award" loading="eager">
+              <div class="gallery3d__caption">Harley Queen — Corel Painter Master Award</div>
+            </div>
+          </div>
+          <div class="gallery3d__item" data-index="3">
+            <div class="gallery3d__frame">
+              <img src="images/gallery-4.svg" alt="Into the Woods II" loading="eager">
+              <div class="gallery3d__caption">Into the Woods II</div>
+            </div>
+          </div>
+          <div class="gallery3d__item" data-index="4">
+            <div class="gallery3d__frame">
+              <img src="images/gallery-5.svg" alt="Truth Series — Kim Harrison Covers" loading="eager">
+              <div class="gallery3d__caption">Truth Series — Kim Harrison Covers</div>
+            </div>
+          </div>
+          <div class="gallery3d__item" data-index="5">
+            <div class="gallery3d__frame">
+              <img src="images/gallery-6.svg" alt="Passion Drives Your Way" loading="eager">
+              <div class="gallery3d__caption">Passion Drives Your Way</div>
+            </div>
+          </div>
+          <div class="gallery3d__item" data-index="6">
+            <div class="gallery3d__frame">
+              <img src="images/gallery-7.svg" alt="Blue Mermaid Puzzle — HEYE Germany" loading="eager">
+              <div class="gallery3d__caption">Blue Mermaid Puzzle — HEYE Germany</div>
+            </div>
+          </div>
+          <div class="gallery3d__item" data-index="7">
+            <div class="gallery3d__frame">
+              <img src="images/gallery-8.svg" alt="Cinderella in Magnolia's Garden" loading="eager">
+              <div class="gallery3d__caption">Cinderella in Magnolia's Garden</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="gallery3d__nav gallery3d__nav--prev" id="gallery3dPrev" aria-label="Previous artwork">&lsaquo;</button>
+      <button class="gallery3d__nav gallery3d__nav--next" id="gallery3dNext" aria-label="Next artwork">&rsaquo;</button>
+      <div class="gallery3d__counter" id="gallery3dCounter">1 / 8</div>
+    </div>
+
+    <!-- Mobile: Card Stack -->
+    <div class="card-stack" id="cardStack">
+      <div class="card-stack__container" id="cardStackContainer">
+        <div class="card-stack__card" data-index="0">
+          <img src="images/gallery-1.svg" alt="Corel Painter Master Award 2016">
+          <div class="card-stack__caption">Corel Painter Master Award 2016</div>
+        </div>
+        <div class="card-stack__card" data-index="1">
+          <img src="images/gallery-2.svg" alt="Red Forest's Fairy Tales">
+          <div class="card-stack__caption">Red Forest's Fairy Tales</div>
+        </div>
+        <div class="card-stack__card" data-index="2">
+          <img src="images/gallery-3.svg" alt="Harley Queen — Corel Painter Master Award">
+          <div class="card-stack__caption">Harley Queen — Corel Painter Master Award</div>
+        </div>
+        <div class="card-stack__card" data-index="3">
+          <img src="images/gallery-4.svg" alt="Into the Woods II">
+          <div class="card-stack__caption">Into the Woods II</div>
+        </div>
+        <div class="card-stack__card" data-index="4">
+          <img src="images/gallery-5.svg" alt="Truth Series — Kim Harrison Covers">
+          <div class="card-stack__caption">Truth Series — Kim Harrison Covers</div>
+        </div>
+        <div class="card-stack__card" data-index="5">
+          <img src="images/gallery-6.svg" alt="Passion Drives Your Way">
+          <div class="card-stack__caption">Passion Drives Your Way</div>
+        </div>
+        <div class="card-stack__card" data-index="6">
+          <img src="images/gallery-7.svg" alt="Blue Mermaid Puzzle — HEYE Germany">
+          <div class="card-stack__caption">Blue Mermaid Puzzle — HEYE Germany</div>
+        </div>
+        <div class="card-stack__card" data-index="7">
+          <img src="images/gallery-8.svg" alt="Cinderella in Magnolia's Garden">
+          <div class="card-stack__caption">Cinderella in Magnolia's Garden</div>
+        </div>
+      </div>
+      <div class="card-stack__dots" id="cardStackDots"></div>
+    </div>
+
+    <a href="#portfolio" class="hero__scroll" aria-label="Scroll to portfolio">
+      <span class="hero__scroll-line"></span>
+    </a>
+  </section>
+
+  <!-- ==================== PORTFOLIO ==================== -->
+  <section class="portfolio" id="portfolio">
+    <div class="section-header">
+      <h2>Portfolio</h2>
+    </div>
+    <div class="portfolio__filters" id="portfolioFilters">
+      <button class="portfolio__filter active" data-filter="all">All</button>
+      <button class="portfolio__filter" data-filter="book-covers">Book Covers</button>
+      <button class="portfolio__filter" data-filter="fantasy">Fantasy</button>
+      <button class="portfolio__filter" data-filter="editorial">Editorial</button>
+      <button class="portfolio__filter" data-filter="personal">Personal</button>
+    </div>
+    <div class="portfolio__grid" id="portfolioGrid">
+      <div class="portfolio__item" data-category="editorial">
+        <img src="images/gallery-1.svg" alt="Corel Painter Master Award 2016" loading="lazy">
+        <div class="portfolio__overlay">
+          <h3>Corel Painter Master Award 2016</h3>
+          <span>Editorial</span>
+        </div>
+      </div>
+      <div class="portfolio__item" data-category="fantasy">
+        <img src="images/gallery-2.svg" alt="Red Forest's Fairy Tales" loading="lazy">
+        <div class="portfolio__overlay">
+          <h3>Red Forest's Fairy Tales</h3>
+          <span>Fantasy</span>
+        </div>
+      </div>
+      <div class="portfolio__item" data-category="editorial">
+        <img src="images/gallery-3.svg" alt="Harley Queen" loading="lazy">
+        <div class="portfolio__overlay">
+          <h3>Harley Queen</h3>
+          <span>Editorial</span>
+        </div>
+      </div>
+      <div class="portfolio__item" data-category="fantasy">
+        <img src="images/gallery-4.svg" alt="Into the Woods II" loading="lazy">
+        <div class="portfolio__overlay">
+          <h3>Into the Woods II</h3>
+          <span>Fantasy</span>
+        </div>
+      </div>
+      <div class="portfolio__item" data-category="book-covers">
+        <img src="images/gallery-5.svg" alt="Truth Series — Kim Harrison" loading="lazy">
+        <div class="portfolio__overlay">
+          <h3>Truth Series</h3>
+          <span>Book Covers</span>
+        </div>
+      </div>
+      <div class="portfolio__item" data-category="personal">
+        <img src="images/gallery-6.svg" alt="Passion Drives Your Way" loading="lazy">
+        <div class="portfolio__overlay">
+          <h3>Passion Drives Your Way</h3>
+          <span>Personal</span>
+        </div>
+      </div>
+      <div class="portfolio__item" data-category="editorial">
+        <img src="images/gallery-7.svg" alt="Blue Mermaid Puzzle — HEYE" loading="lazy">
+        <div class="portfolio__overlay">
+          <h3>Blue Mermaid Puzzle</h3>
+          <span>Editorial</span>
+        </div>
+      </div>
+      <div class="portfolio__item" data-category="fantasy">
+        <img src="images/gallery-8.svg" alt="Cinderella in Magnolia's Garden" loading="lazy">
+        <div class="portfolio__overlay">
+          <h3>Cinderella in Magnolia's Garden</h3>
+          <span>Fantasy</span>
+        </div>
+      </div>
+      <div class="portfolio__item" data-category="book-covers">
+        <img src="images/gallery-1.svg" alt="Tempest Series — Tracy Deebs" loading="lazy">
+        <div class="portfolio__overlay">
+          <h3>Tempest Series</h3>
+          <span>Book Covers</span>
+        </div>
+      </div>
+      <div class="portfolio__item" data-category="editorial">
+        <img src="images/gallery-4.svg" alt="Obscure Art Calendar — HEYE" loading="lazy">
+        <div class="portfolio__overlay">
+          <h3>Obscure Art Calendar</h3>
+          <span>Editorial</span>
+        </div>
+      </div>
+      <div class="portfolio__item" data-category="personal">
+        <img src="images/gallery-2.svg" alt="Animal Project Vol. III" loading="lazy">
+        <div class="portfolio__overlay">
+          <h3>Animal Project Vol. III</h3>
+          <span>Personal</span>
+        </div>
+      </div>
+      <div class="portfolio__item" data-category="book-covers">
+        <img src="images/gallery-6.svg" alt="Last Kingdom — Cover" loading="lazy">
+        <div class="portfolio__overlay">
+          <h3>Last Kingdom</h3>
+          <span>Book Covers</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PROCESS / HOW I WORK ==================== -->
+  <section class="process" id="process">
+    <div class="section-header">
+      <h2>How I Work</h2>
+      <p class="section-header__sub">Every painting is a journey — from the first pencil sketch to the final brushstroke in Corel Painter. Each piece takes 40 to 60 hours of focused, hand-crafted work.</p>
+    </div>
+
+    <div class="process__stages">
+      <div class="process__piece">
+        <h3 class="process__piece-title">From Concept to Canvas</h3>
+        <div class="process__slider" data-process-slider>
+          <div class="process__slider-container">
+            <div class="process__stage" data-stage="1">
+              <div class="process__stage-img">
+                <img src="images/process-sketch.svg" alt="Initial pencil sketch" loading="lazy">
+              </div>
+              <div class="process__stage-info">
+                <span class="process__stage-number">01</span>
+                <h4>Pencil Sketch</h4>
+                <p>Every painting begins with traditional pencil sketches — exploring composition, poses, and the emotional tone of the piece.</p>
+              </div>
+            </div>
+            <div class="process__stage" data-stage="2">
+              <div class="process__stage-img">
+                <img src="images/process-values.svg" alt="Value study and composition" loading="lazy">
+              </div>
+              <div class="process__stage-info">
+                <span class="process__stage-number">02</span>
+                <h4>Values &amp; Composition</h4>
+                <p>A monochrome value study establishes light, shadow, and depth — the foundation that makes the final painting read at any size.</p>
+              </div>
+            </div>
+            <div class="process__stage" data-stage="3">
+              <div class="process__stage-img">
+                <img src="images/process-color.svg" alt="Color blocking and atmosphere" loading="lazy">
+              </div>
+              <div class="process__stage-info">
+                <span class="process__stage-number">03</span>
+                <h4>Color &amp; Atmosphere</h4>
+                <p>Color is layered in gradually, building mood and atmosphere. Each hue is chosen to serve the story the painting tells.</p>
+              </div>
+            </div>
+            <div class="process__stage" data-stage="4">
+              <div class="process__stage-img">
+                <img src="images/process-final.svg" alt="Final refined painting" loading="lazy">
+              </div>
+              <div class="process__stage-info">
+                <span class="process__stage-number">04</span>
+                <h4>Final Painting</h4>
+                <p>Hours of detailed brushwork in Corel Painter bring the piece to life — every texture, reflection, and strand of hair painted by hand.</p>
+              </div>
+            </div>
+          </div>
+          <div class="process__progress">
+            <div class="process__progress-bar" id="processProgressBar"></div>
+            <div class="process__progress-steps">
+              <button class="process__progress-step active" data-step="0">01</button>
+              <button class="process__progress-step" data-step="1">02</button>
+              <button class="process__progress-step" data-step="2">03</button>
+              <button class="process__progress-step" data-step="3">04</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="process__tools">
+      <h3>Tools of the Craft</h3>
+      <div class="process__tools-grid">
+        <div class="process__tool">
+          <div class="process__tool-icon">✏️</div>
+          <h4>Pencil &amp; Paper</h4>
+          <p>Every piece starts analog — sketches and thumbnails by hand</p>
+        </div>
+        <div class="process__tool">
+          <div class="process__tool-icon">🖌️</div>
+          <h4>Corel Painter</h4>
+          <p>Primary digital painting tool since 2007 — official beta tester and Painter Master</p>
+        </div>
+        <div class="process__tool">
+          <div class="process__tool-icon">📐</div>
+          <h4>Wacom Tablet</h4>
+          <p>Pressure-sensitive pen input for natural, hand-crafted brushwork</p>
+        </div>
+        <div class="process__tool">
+          <div class="process__tool-icon">⏱️</div>
+          <h4>40–60 Hours</h4>
+          <p>Each painting is a commitment — no shortcuts, no AI, every brushstroke intentional</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== ABOUT ==================== -->
+  <section class="about" id="about">
+    <div class="section-header">
+      <h2>About</h2>
+    </div>
+    <div class="about__content">
+      <div class="about__photo">
+        <img src="images/portrait.svg" alt="Katarina Sokolova" loading="lazy">
+      </div>
+      <div class="about__bio">
+        <h3>Katarina Sokolova</h3>
+        <p class="about__tagline">Digital illustrator &amp; Corel Painter Master</p>
+        <p>I'm a CG artist who has worked as a freelance illustrator since 2000. My style blends realism, fantasy, sensuality, and storytelling — placing characters and objects in surreal worlds of dreams and imagination.</p>
+        <p>I create digital illustrations for international editorials, advertising agencies, publishing houses, and magazines across five continents. My work has been featured on book covers, puzzles, calendars, and in the world's leading digital art publications.</p>
+        <p>In 2016, I was honoured with the Corel Painter Master Award. My artwork was selected for the cover and advertising campaign of Corel Painter XI, and I've served as an official beta tester for the software since 2007.</p>
+      </div>
+    </div>
+
+    <div class="about__awards">
+      <h3>Awards &amp; Recognition</h3>
+      <div class="about__awards-grid">
+        <div class="about__award">
+          <span class="about__award-year">2016</span>
+          <span class="about__award-title">Corel Painter Master Award</span>
+        </div>
+        <div class="about__award">
+          <span class="about__award-year">2007</span>
+          <span class="about__award-title">Corel Painter XI — Cover Artist</span>
+        </div>
+        <div class="about__award">
+          <span class="about__award-year">2004</span>
+          <span class="about__award-title">INSOMNIA Art Book — Norma Editorial, Spain</span>
+        </div>
+        <div class="about__award">
+          <span class="about__award-year">2003–</span>
+          <span class="about__award-title">EXPOSÉ &amp; EXOTIQUE — Ballistic Publishing (incl. cover)</span>
+        </div>
+        <div class="about__award">
+          <span class="about__award-year">2007–</span>
+          <span class="about__award-title">ImagineFX Magazine — Regular Columnist &amp; Cover Artist</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="about__clients">
+      <h3>Selected Clients &amp; Publications</h3>
+      <div class="about__clients-grid">
+        <span>Corel Painter</span>
+        <span>HEYE Puzzles</span>
+        <span>ImagineFX</span>
+        <span>Ballistic Publishing</span>
+        <span>Norma Editorial</span>
+        <span>Walker Books</span>
+        <span>Bloomsbury Publishing</span>
+        <span>Blanvalet</span>
+        <span>Ullstein</span>
+        <span>Planeta Group</span>
+        <span>Carousel Calendar</span>
+        <span>Santillana Ediciones</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CONTACT ==================== -->
+  <section class="contact" id="contact">
+    <div class="section-header">
+      <h2>Contact</h2>
+      <p class="section-header__sub">Currently available for publishing, editorial, and game illustration commissions.</p>
+    </div>
+    <div class="contact__content">
+      <div class="contact__info">
+        <a href="mailto:contact@katarinasokolova.com" class="contact__email">contact@katarinasokolova.com</a>
+        <p class="contact__note">For commissions, art direction inquiries, or licensing — I'd love to hear from you.</p>
+      </div>
+      <div class="contact__links">
+        <a href="https://katarinasokolova.artstation.com" target="_blank" rel="noopener" class="contact__link">
+          <span class="contact__link-name">ArtStation</span>
+          <span class="contact__link-arrow">&rarr;</span>
+        </a>
+        <a href="https://www.deviantart.com/katarina-sokolova" target="_blank" rel="noopener" class="contact__link">
+          <span class="contact__link-name">DeviantArt</span>
+          <span class="contact__link-arrow">&rarr;</span>
+        </a>
+        <a href="https://www.facebook.com/realkatarinasokolova/" target="_blank" rel="noopener" class="contact__link">
+          <span class="contact__link-name">Facebook</span>
+          <span class="contact__link-arrow">&rarr;</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; 2026 Katarina Sokolova. All artwork and images are the property of the artist.</p>
+  </footer>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox__close" id="lightboxClose" aria-label="Close">&times;</button>
+    <button class="lightbox__nav lightbox__nav--prev" id="lightboxPrev" aria-label="Previous">&lsaquo;</button>
+    <button class="lightbox__nav lightbox__nav--next" id="lightboxNext" aria-label="Next">&rsaquo;</button>
+    <div class="lightbox__content">
+      <img src="" alt="" id="lightboxImg">
+      <div class="lightbox__caption" id="lightboxCaption"></div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

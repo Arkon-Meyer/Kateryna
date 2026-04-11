@@ -2,13 +2,11 @@
 
 ## Cursor Cloud specific instructions
 
-This repository ("Kateryna") is currently an empty/skeleton project with only a `README.md`. There are no application services, dependencies, build systems, tests, or lint configurations.
+This is a static portfolio website for digital artist Katarina Sokolova. No build step, no frameworks, no package manager.
 
-- **No services to start.** There is no backend, frontend, database, or any other service.
-- **No dependencies to install.** There is no `package.json`, `requirements.txt`, `Cargo.toml`, or equivalent.
-- **No lint/test/build commands.** There are no configured linters, test runners, or build pipelines.
-
-When application code is added to this repository, this section should be updated with:
-1. How to install dependencies
-2. How to run lint, tests, and the dev server
-3. Any non-obvious caveats discovered during setup
+- **Tech stack**: Plain HTML + CSS + vanilla JavaScript
+- **Run locally**: `python3 -m http.server 8080` from the repo root, then open `http://localhost:8080/`
+- **No dependencies to install** — no `package.json`, `requirements.txt`, or equivalent
+- **No lint/test commands configured** — static files only
+- **Placeholder images**: Files in `images/` are SVG placeholders. Replace with actual artwork JPG/PNG/WebP files, keeping the same filenames (update extensions in `index.html` accordingly).
+- **Responsive design**: Desktop uses a 3D gallery carousel; mobile (<=768px) uses a swipeable card stack. Test both viewports when making changes.
