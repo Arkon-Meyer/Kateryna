@@ -196,12 +196,17 @@ a:hover { color: var(--text); }
   justify-content: center;
   padding: 96px var(--gutter) 2.25rem;
   overflow: hidden;
+  --hero-text-min-gap: clamp(0.9rem, 2.1vh, 1.4rem);
 }
 .hero__text {
   text-align: center;
   max-width: var(--content-narrow);
-  margin-top: clamp(3.2rem, 7.5vh, 4.8rem);
+  margin-top: calc(
+    (1 - var(--title-progress)) * clamp(3.2rem, 7.5vh, 4.8rem) +
+    var(--title-progress) * clamp(1.1rem, 2.6vh, 1.9rem)
+  );
   margin-bottom: clamp(1.5rem, 3.5vw, 2.75rem);
+  transform: translateY(calc((1 - var(--title-progress)) * clamp(0.6rem, 1.6vh, 1.05rem)));
   z-index: 2;
 }
 .hero__title {
@@ -242,7 +247,10 @@ a:hover { color: var(--text); }
   max-width: var(--content-max);
   height: 520px;
   perspective: 1200px;
-  margin: clamp(0.8rem, 2.6vh, 1.5rem) auto 0;
+  margin: calc(
+    clamp(1.1rem, 3vh, 1.9rem) +
+    var(--title-progress) * clamp(0.55rem, 1.4vh, 0.95rem)
+  ) auto 0;
 }
 .gallery3d__scene {
   width: 100%;

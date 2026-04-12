@@ -18,7 +18,7 @@
 
   function updateNavState() {
     var scrollY = window.scrollY;
-    var shiftRange = 220;
+    var shiftRange = 170;
     var titleProgress = Math.min(scrollY / shiftRange, 1);
     var barProgress = Math.min(scrollY / 150, 1);
     var linksProgress = Math.max((scrollY - 72) / 120, 0);
@@ -28,6 +28,10 @@
     nav.style.setProperty('--title-progress', String(titleProgress));
     nav.style.setProperty('--bar-progress', String(barProgress));
     nav.style.setProperty('--links-progress', String(Math.min(linksProgress, 1)));
+    var hero = qs('.hero');
+    if (hero) {
+      hero.style.setProperty('--title-progress', String(titleProgress));
+    }
   }
   window.addEventListener('scroll', updateNavState);
   updateNavState();
