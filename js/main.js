@@ -18,7 +18,7 @@
 
   function updateNavState() {
     var scrollY = window.scrollY;
-    var isShifted = scrollY > 2;
+    var isShifted = scrollY > 18;
     nav.classList.toggle('scrolled', isShifted);
     nav.classList.toggle('brand-shifted', isShifted);
   }
