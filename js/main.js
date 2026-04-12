@@ -9,6 +9,60 @@
   /* --- Utilities --- */
   function qs(sel, ctx) { return (ctx || document).querySelector(sel); }
   function qsa(sel, ctx) { return Array.from((ctx || document).querySelectorAll(sel)); }
+  function bindHorizontalSwipe(el, handlers) {
+    if (!el) return;
+
+    var startX = 0;
+    var startY = 0;
+    var deltaX = 0;
+    var deltaY = 0;
+    var tracking = false;
+
+    function reset() {
+      startX = 0;
+      startY = 0;
+      deltaX = 0;
+      deltaY = 0;
+      tracking = false;
+    }
+
+    function onTouchStart(e) {
+      if (!e.touches || e.touches.length !== 1) return;
+      tracking = true;
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+      deltaX = 0;
+      deltaY = 0;
+    }
+
+    function onTouchMove(e) {
+      if (!tracking || !e.touches || e.touches.length !== 1) return;
+      deltaX = e.touches[0].clientX - startX;
+      deltaY = e.touches[0].clientY - startY;
+    }
+
+    function onTouchEnd() {
+      if (!tracking) return;
+      var absX = Math.abs(deltaX);
+      var absY = Math.abs(deltaY);
+      var isHorizontalSwipe = absX > 48 && absX > absY * 1.15;
+
+      if (isHorizontalSwipe) {
+        if (deltaX < 0 && handlers && handlers.onSwipeLeft) handlers.onSwipeLeft();
+        if (deltaX > 0 && handlers && handlers.onSwipeRight) handlers.onSwipeRight();
+      }
+      reset();
+    }
+
+    function onTouchCancel() {
+      reset();
+    }
+
+    el.addEventListener('touchstart', onTouchStart, { passive: true });
+    el.addEventListener('touchmove', onTouchMove, { passive: true });
+    el.addEventListener('touchend', onTouchEnd, { passive: true });
+    el.addEventListener('touchcancel', onTouchCancel, { passive: true });
+  }
 
   /* ==========================================
      NAVIGATION
@@ -67,6 +121,7 @@
     var totalItems = items.length;
     var currentIndex = 0;
     var counter = qs('#gallery3dCounter');
+    var last3dSwipeAt = 0;
 
     function position3dGallery() {
       items.forEach(function (item, i) {
@@ -103,6 +158,7 @@
 
     items.forEach(function (item) {
       item.addEventListener('click', function () {
+        if (Date.now() - last3dSwipeAt < 320) return;
         var idx = parseInt(item.dataset.index, 10);
         if (idx === currentIndex) {
           openLightbox(idx, items.map(function (it) {
@@ -131,6 +187,18 @@
     });
     gallery3d.addEventListener('mouseleave', function () {
       qs('#gallery3dTrack').style.transform = 'rotateY(0deg)';
+    });
+
+    /* Touch swipe for hero gallery (touchscreen desktop/tablet) */
+    bindHorizontalSwipe(gallery3d, {
+      onSwipeLeft: function () {
+        last3dSwipeAt = Date.now();
+        goTo3d(currentIndex + 1);
+      },
+      onSwipeRight: function () {
+        last3dSwipeAt = Date.now();
+        goTo3d(currentIndex - 1);
+      }
     });
 
     position3dGallery();
@@ -246,6 +314,7 @@
      LIGHTBOX
      ========================================== */
   var lightbox = qs('#lightbox');
+  var lightboxContent = qs('.lightbox__content');
   var lightboxImg = qs('#lightboxImg');
   var lightboxCaption = qs('#lightboxCaption');
   var lightboxItems = [];
@@ -295,6 +364,20 @@
     }
     if (e.key === 'ArrowRight') {
       lightboxIndex = (lightboxIndex + 1) % lightboxItems.length;
+      showLightboxItem();
+    }
+  });
+
+  /* Touch swipe for fullscreen lightbox gallery */
+  bindHorizontalSwipe(lightboxContent, {
+    onSwipeLeft: function () {
+      if (!lightbox.classList.contains('open') || !lightboxItems.length) return;
+      lightboxIndex = (lightboxIndex + 1) % lightboxItems.length;
+      showLightboxItem();
+    },
+    onSwipeRight: function () {
+      if (!lightbox.classList.contains('open') || !lightboxItems.length) return;
+      lightboxIndex = (lightboxIndex - 1 + lightboxItems.length) % lightboxItems.length;
       showLightboxItem();
     }
   });
