@@ -18,9 +18,16 @@
 
   function updateNavState() {
     var scrollY = window.scrollY;
-    var isShifted = scrollY > 18;
-    nav.classList.toggle('scrolled', isShifted);
-    nav.classList.toggle('brand-shifted', isShifted);
+    var shiftRange = 220;
+    var titleProgress = Math.min(scrollY / shiftRange, 1);
+    var barProgress = Math.min(scrollY / 150, 1);
+    var linksProgress = Math.max((scrollY - 72) / 120, 0);
+
+    nav.classList.toggle('scrolled', scrollY > 6);
+    nav.classList.toggle('brand-shifted', titleProgress > 0.08);
+    nav.style.setProperty('--title-progress', String(titleProgress));
+    nav.style.setProperty('--bar-progress', String(barProgress));
+    nav.style.setProperty('--links-progress', String(Math.min(linksProgress, 1)));
   }
   window.addEventListener('scroll', updateNavState);
   updateNavState();
