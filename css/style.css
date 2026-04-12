@@ -200,6 +200,7 @@ a:hover { color: var(--text); }
 .hero__text {
   text-align: center;
   max-width: var(--content-narrow);
+  margin-top: clamp(3.2rem, 7.5vh, 4.8rem);
   margin-bottom: clamp(1.5rem, 3.5vw, 2.75rem);
   z-index: 2;
 }
@@ -1084,6 +1085,7 @@ a:hover { color: var(--text); }
   /* Hero — hide title (already shown in nav logo) */
   .hero { padding: 80px 1.25rem 2rem; min-height: 100svh; }
   .hero__text { display: block; }
+  .hero__text { margin-top: 0; }
   .hero__title { display: none; }
   .hero__tagline { margin-top: 0.5rem; }
 
