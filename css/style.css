@@ -106,24 +106,28 @@ a:hover { color: var(--text); }
 }
 .nav__logo {
   position: fixed;
-  top: clamp(7.5rem, 18vh, 9rem);
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
   font-family: var(--serif);
-  font-size: clamp(2.2rem, 6vw, 4.5rem);
+  font-size: clamp(2.4rem, 6vw, 4.6rem);
   font-weight: 400;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text);
   white-space: nowrap;
   z-index: 1100;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
   transition:
     top var(--transition),
     left var(--transition),
     transform var(--transition),
     font-size var(--transition),
     letter-spacing var(--transition),
-    color var(--transition);
+    color var(--transition),
+    opacity var(--transition-fast);
 }
 .nav.brand-shifted .nav__logo {
   top: 50%;
@@ -132,6 +136,9 @@ a:hover { color: var(--text); }
   font-size: 1.2rem;
   letter-spacing: 0.06em;
   text-transform: none;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 .nav__logo:hover { color: var(--accent); }
 .nav__links {
@@ -194,7 +201,10 @@ a:hover { color: var(--text); }
   overflow: hidden;
 }
 .hero__text {
-  display: none;
+  text-align: center;
+  max-width: var(--content-narrow);
+  margin-bottom: clamp(1.5rem, 3.5vw, 2.75rem);
+  z-index: 2;
 }
 .hero__title {
   font-family: var(--serif);
@@ -1070,6 +1080,9 @@ a:hover { color: var(--text); }
     letter-spacing: 0.06em;
     text-transform: none;
     z-index: auto;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
   }
   .nav__links { display: none; }
   .mobile-tab-bar { display: flex; }

@@ -16,14 +16,11 @@
   const nav = qs('#nav');
   const allNavLinks = qsa('[data-section]');
 
-  var hasShiftedBrand = false;
   function updateNavState() {
     var scrollY = window.scrollY;
-    if (scrollY > 2) {
-      hasShiftedBrand = true;
-    }
-    nav.classList.toggle('scrolled', scrollY > 40);
-    nav.classList.toggle('brand-shifted', hasShiftedBrand);
+    var isShifted = scrollY > 2;
+    nav.classList.toggle('scrolled', isShifted);
+    nav.classList.toggle('brand-shifted', isShifted);
   }
   window.addEventListener('scroll', updateNavState);
   updateNavState();
