@@ -92,21 +92,36 @@ a:hover { color: var(--text); }
   justify-content: flex-end;
   padding: 0 var(--gutter);
   height: 64px;
+  --nav-bar-opacity: 0;
+  --nav-links-opacity: 0;
+  --nav-links-offset: 10px;
   background: transparent;
   backdrop-filter: blur(0);
   -webkit-backdrop-filter: blur(0);
   border-bottom: 1px solid transparent;
   transition: border-color var(--transition), background var(--transition), backdrop-filter var(--transition);
 }
-.nav.scrolled {
-  border-bottom-color: var(--border);
+.nav::before {
+  content: '';
+  position: absolute;
+  inset: 0;
   background: rgba(10, 10, 12, 0.95);
+  border-bottom: 1px solid var(--border);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
+  opacity: var(--nav-bar-opacity);
+  transition: opacity 0.2s linear;
+  pointer-events: none;
+}
+.nav.scrolled {
+  border-bottom-color: transparent;
+  background: transparent;
+  backdrop-filter: blur(0);
+  -webkit-backdrop-filter: blur(0);
 }
 .nav__logo {
   position: fixed;
-  top: 50%;
+  top: clamp(7.25rem, 18vh, 9rem);
   left: 50%;
   transform: translate(-50%, -50%);
   font-family: var(--serif);
@@ -117,17 +132,15 @@ a:hover { color: var(--text); }
   color: var(--text);
   white-space: nowrap;
   z-index: 1100;
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
+  pointer-events: auto;
   transition:
-    top var(--transition),
-    left var(--transition),
-    transform var(--transition),
-    font-size var(--transition),
-    letter-spacing var(--transition),
-    color var(--transition),
-    opacity var(--transition-fast);
+    top 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    left 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    font-size 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    letter-spacing 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    text-transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    color var(--transition);
 }
 .nav.brand-shifted .nav__logo {
   top: 50%;
@@ -142,6 +155,8 @@ a:hover { color: var(--text); }
 }
 .nav__logo:hover { color: var(--accent); }
 .nav__links {
+  position: relative;
+  z-index: 1;
   display: flex;
   list-style: none;
   gap: clamp(1.15rem, 2vw, 2rem);
@@ -150,15 +165,13 @@ a:hover { color: var(--text); }
   margin-left: auto;
   padding-left: 0;
   box-sizing: border-box;
-  opacity: 0;
-  transform: translateY(-10px);
+  opacity: var(--nav-links-opacity);
+  transform: translateY(var(--nav-links-offset));
   pointer-events: none;
-  transition: opacity var(--transition-fast), transform var(--transition-fast);
+  transition: opacity 0.24s ease, transform 0.24s ease;
 }
 .nav.brand-shifted .nav__links {
   padding-left: clamp(9.5rem, 24vw, 17rem);
-  opacity: 1;
-  transform: translateY(0);
   pointer-events: auto;
 }
 .nav__links a {
@@ -207,12 +220,7 @@ a:hover { color: var(--text); }
   z-index: 2;
 }
 .hero__title {
-  font-family: var(--serif);
-  font-weight: 300;
-  font-size: clamp(2.2rem, 6vw, 4.5rem);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  margin-bottom: 0.5rem;
+  display: none;
 }
 .hero__tagline {
   font-size: clamp(0.85rem, 1.5vw, 1rem);
@@ -1080,9 +1088,6 @@ a:hover { color: var(--text); }
     letter-spacing: 0.06em;
     text-transform: none;
     z-index: auto;
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
   }
   .nav__links { display: none; }
   .mobile-tab-bar { display: flex; }

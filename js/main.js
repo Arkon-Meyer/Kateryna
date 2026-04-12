@@ -14,13 +14,25 @@
      NAVIGATION
      ========================================== */
   const nav = qs('#nav');
+  const navLinks = qs('#navLinks');
   const allNavLinks = qsa('[data-section]');
 
   function updateNavState() {
     var scrollY = window.scrollY;
-    var isShifted = scrollY > 2;
+    var shiftDistance = 120;
+    var progress = Math.min(scrollY / shiftDistance, 1);
+    var isShifted = progress > 0.08;
+    var linksProgress = Math.max((progress - 0.35) / 0.65, 0);
+
     nav.classList.toggle('scrolled', isShifted);
     nav.classList.toggle('brand-shifted', isShifted);
+    nav.style.setProperty('--scroll-progress', String(progress));
+    nav.style.setProperty('--nav-bar-opacity', String(progress));
+    nav.style.setProperty('--nav-links-opacity', String(linksProgress));
+    nav.style.setProperty('--nav-links-offset', String((1 - linksProgress) * 10) + 'px');
+    if (navLinks) {
+      navLinks.style.pointerEvents = linksProgress > 0.08 ? 'auto' : 'none';
+    }
   }
   window.addEventListener('scroll', updateNavState);
   updateNavState();
