@@ -92,36 +92,25 @@ a:hover { color: var(--text); }
   justify-content: flex-end;
   padding: 0 var(--gutter);
   height: 64px;
-  --nav-bar-opacity: 0;
-  --nav-links-opacity: 0;
-  --nav-links-offset: 10px;
   background: transparent;
   backdrop-filter: blur(0);
   -webkit-backdrop-filter: blur(0);
   border-bottom: 1px solid transparent;
-  transition: border-color var(--transition), background var(--transition), backdrop-filter var(--transition);
-}
-.nav::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(10, 10, 12, 0.95);
-  border-bottom: 1px solid var(--border);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  opacity: var(--nav-bar-opacity);
-  transition: opacity 0.2s linear;
-  pointer-events: none;
+  transition:
+    border-color 0.38s ease,
+    background 0.38s ease,
+    backdrop-filter 0.38s ease,
+    -webkit-backdrop-filter 0.38s ease;
 }
 .nav.scrolled {
-  border-bottom-color: transparent;
-  background: transparent;
-  backdrop-filter: blur(0);
-  -webkit-backdrop-filter: blur(0);
+  border-bottom-color: var(--border);
+  background: rgba(10, 10, 12, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 }
 .nav__logo {
   position: fixed;
-  top: clamp(7.25rem, 18vh, 9rem);
+  top: clamp(6.3rem, 15vh, 7.8rem);
   left: 50%;
   transform: translate(-50%, -50%);
   font-family: var(--serif);
@@ -165,13 +154,15 @@ a:hover { color: var(--text); }
   margin-left: auto;
   padding-left: 0;
   box-sizing: border-box;
-  opacity: var(--nav-links-opacity);
-  transform: translateY(var(--nav-links-offset));
+  opacity: 0;
+  transform: translateY(-10px);
   pointer-events: none;
-  transition: opacity 0.24s ease, transform 0.24s ease;
+  transition: opacity 0.26s ease 0.08s, transform 0.26s ease 0.08s;
 }
 .nav.brand-shifted .nav__links {
   padding-left: clamp(9.5rem, 24vw, 17rem);
+  opacity: 1;
+  transform: translateY(0);
   pointer-events: auto;
 }
 .nav__links a {
@@ -257,7 +248,7 @@ a:hover { color: var(--text); }
   max-width: var(--content-max);
   height: 520px;
   perspective: 1200px;
-  margin: 0 auto;
+  margin: clamp(0.8rem, 2.6vh, 1.5rem) auto 0;
 }
 .gallery3d__scene {
   width: 100%;
