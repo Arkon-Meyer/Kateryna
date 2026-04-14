@@ -68,49 +68,117 @@
      NAVIGATION
      ========================================== */
   const nav = qs('#nav');
-  const allNavLinks = qsa('[data-section]');
+  const hero = qs('.hero');
+  const sections = qsa('section[id]');
 
-  function updateNavState() {
-    var scrollY = window.scrollY;
-    var shiftRange = 170;
-    var titleProgress = Math.min(scrollY / shiftRange, 1);
-    var barProgress = Math.min(scrollY / 150, 1);
-    var linksProgress = Math.max((scrollY - 72) / 120, 0);
+  function clamp01(v) {
+    return Math.max(0, Math.min(v, 1));
+  }
 
-    nav.classList.toggle('scrolled', scrollY > 6);
+  var sectionLinksMap = sections.map(function (section) {
+    var id = section.getAttribute('id');
+    return {
+      section: section,
+      links: qsa('[data-section="' + id + '"]')
+    };
+  });
+
+  function applyNavState(scrollY, titleProgress, barProgress, linksProgress, heroTextProgress) {
+    nav.classList.toggle('scrolled', barProgress > 0.04);
     nav.classList.toggle('brand-shifted', titleProgress > 0.08);
     nav.style.setProperty('--title-progress', String(titleProgress));
     nav.style.setProperty('--bar-progress', String(barProgress));
-    nav.style.setProperty('--links-progress', String(Math.min(linksProgress, 1)));
-    var hero = qs('.hero');
+    nav.style.setProperty('--links-progress', String(linksProgress));
     if (hero) {
       hero.style.setProperty('--title-progress', String(titleProgress));
+      hero.style.setProperty('--hero-text-progress', String(heroTextProgress));
     }
-  }
-  window.addEventListener('scroll', updateNavState);
-  updateNavState();
 
-  /* Active nav + mobile tab bar highlighting on scroll */
-  const sections = qsa('section[id]');
-  var mobileTabItems = qsa('.mobile-tab-bar__item');
-  function updateActiveNav() {
-    var scrollY = window.scrollY + 120;
-    sections.forEach(function (section) {
-      var top = section.offsetTop;
-      var height = section.offsetHeight;
-      var id = section.getAttribute('id');
-      var links = qsa('[data-section="' + id + '"]');
-      links.forEach(function (link) {
-        if (scrollY >= top && scrollY < top + height) {
-          link.classList.add('active');
-        } else {
-          link.classList.remove('active');
-        }
+    var activeScanY = scrollY + 120;
+    sectionLinksMap.forEach(function (entry) {
+      var top = entry.section.offsetTop;
+      var height = entry.section.offsetHeight;
+      entry.links.forEach(function (link) {
+        var isActive = activeScanY >= top && activeScanY < top + height;
+        link.classList.toggle('active', isActive);
       });
     });
   }
-  window.addEventListener('scroll', updateActiveNav);
-  updateActiveNav();
+
+  var latestScrollY = window.scrollY;
+  var rafId = 0;
+  var currentTitleProgress = 0;
+  var currentBarProgress = 0;
+  var currentLinksProgress = 0;
+  var currentHeroTextProgress = 0;
+
+  function targetProgresses(scrollY) {
+    return {
+      title: clamp01(scrollY / 170),
+      bar: clamp01(scrollY / 160),
+      links: clamp01((scrollY - 72) / 128),
+      heroText: clamp01((scrollY - 8) / 250)
+    };
+  }
+
+  function tickScrollAnimation() {
+    var t = targetProgresses(latestScrollY);
+    var smoothing = 0.26;
+
+    currentTitleProgress += (t.title - currentTitleProgress) * smoothing;
+    currentBarProgress += (t.bar - currentBarProgress) * smoothing;
+    currentLinksProgress += (t.links - currentLinksProgress) * smoothing;
+    currentHeroTextProgress += (t.heroText - currentHeroTextProgress) * smoothing;
+
+    if (Math.abs(t.title - currentTitleProgress) < 0.001) currentTitleProgress = t.title;
+    if (Math.abs(t.bar - currentBarProgress) < 0.001) currentBarProgress = t.bar;
+    if (Math.abs(t.links - currentLinksProgress) < 0.001) currentLinksProgress = t.links;
+    if (Math.abs(t.heroText - currentHeroTextProgress) < 0.001) currentHeroTextProgress = t.heroText;
+
+    applyNavState(
+      latestScrollY,
+      currentTitleProgress,
+      currentBarProgress,
+      currentLinksProgress,
+      currentHeroTextProgress
+    );
+
+    var keepAnimating =
+      currentTitleProgress !== t.title ||
+      currentBarProgress !== t.bar ||
+      currentLinksProgress !== t.links ||
+      currentHeroTextProgress !== t.heroText;
+
+    if (keepAnimating) {
+      rafId = window.requestAnimationFrame(tickScrollAnimation);
+    } else {
+      rafId = 0;
+    }
+  }
+
+  function queueScrollAnimation() {
+    if (rafId) return;
+    rafId = window.requestAnimationFrame(tickScrollAnimation);
+  }
+
+  window.addEventListener('scroll', function () {
+    latestScrollY = window.scrollY;
+    queueScrollAnimation();
+  }, { passive: true });
+
+  window.addEventListener('resize', function () {
+    latestScrollY = window.scrollY;
+    queueScrollAnimation();
+  });
+
+  (function initScrollState() {
+    var t = targetProgresses(latestScrollY);
+    currentTitleProgress = t.title;
+    currentBarProgress = t.bar;
+    currentLinksProgress = t.links;
+    currentHeroTextProgress = t.heroText;
+    applyNavState(latestScrollY, t.title, t.bar, t.links, t.heroText);
+  })();
 
   /* ==========================================
      DESKTOP 3D GALLERY
