@@ -65,9 +65,51 @@
   }
 
   /* ==========================================
+     GALLERY DATA — single source of truth
+     ========================================== */
+  var galleryData = [];
+  var dataEl = qs('#galleryData');
+  if (dataEl) {
+    try { galleryData = JSON.parse(dataEl.textContent); } catch (e) { /* ignore */ }
+  }
+
+  function buildDesktopGallery() {
+    var track = qs('#gallery3dTrack');
+    if (!track) return;
+    galleryData.forEach(function (item, i) {
+      var div = document.createElement('div');
+      div.className = 'gallery3d__item';
+      div.dataset.index = String(i);
+      div.innerHTML =
+        '<div class="gallery3d__frame">' +
+          '<img src="' + item.src + '" alt="' + item.alt + '"' + (i < 3 ? ' loading="eager"' : ' loading="lazy"') + '>' +
+          '<div class="gallery3d__caption">' + item.alt + '</div>' +
+        '</div>';
+      track.appendChild(div);
+    });
+  }
+
+  function buildMobileCardStack() {
+    var container = qs('#cardStackContainer');
+    if (!container) return;
+    galleryData.forEach(function (item, i) {
+      var div = document.createElement('div');
+      div.className = 'card-stack__card';
+      div.dataset.index = String(i);
+      div.innerHTML =
+        '<img src="' + item.src + '" alt="' + item.alt + '">' +
+        '<div class="card-stack__caption">' + item.alt + '</div>';
+      container.appendChild(div);
+    });
+  }
+
+  buildDesktopGallery();
+  buildMobileCardStack();
+
+  /* ==========================================
      NAVIGATION
      ========================================== */
-  const nav = qs('#nav');
+  var nav = qs('#nav');
   const hero = qs('.hero');
   const sections = qsa('section[id]');
 
@@ -229,10 +271,7 @@
         if (Date.now() - last3dSwipeAt < 320) return;
         var idx = parseInt(item.dataset.index, 10);
         if (idx === currentIndex) {
-          openLightbox(idx, items.map(function (it) {
-            var img = qs('img', it);
-            return { src: img.src, alt: img.alt };
-          }));
+          openLightbox(idx, galleryData);
         } else {
           goTo3d(idx);
         }
@@ -345,6 +384,7 @@
      ========================================== */
   var filterBtns = qsa('.portfolio__filter');
   var portfolioItems = qsa('.portfolio__item');
+  var filterHideTimers = [];
 
   filterBtns.forEach(function (btn) {
     btn.addEventListener('click', function () {
@@ -352,13 +392,17 @@
       btn.classList.add('active');
       var filter = btn.dataset.filter;
 
+      filterHideTimers.forEach(function (id) { clearTimeout(id); });
+      filterHideTimers.length = 0;
+
       portfolioItems.forEach(function (item) {
         if (filter === 'all' || item.dataset.category === filter) {
           item.classList.remove('hiding');
           item.style.display = '';
         } else {
           item.classList.add('hiding');
-          setTimeout(function () { item.style.display = 'none'; }, 400);
+          var timerId = setTimeout(function () { item.style.display = 'none'; }, 400);
+          filterHideTimers.push(timerId);
         }
       });
     });
@@ -388,12 +432,16 @@
   var lightboxItems = [];
   var lightboxIndex = 0;
 
+  var lastFocusBeforeLightbox = null;
+
   function openLightbox(index, items) {
     lightboxItems = items;
     lightboxIndex = index;
     showLightboxItem();
+    lastFocusBeforeLightbox = document.activeElement;
     lightbox.classList.add('open');
     document.body.style.overflow = 'hidden';
+    qs('#lightboxClose').focus();
   }
 
   function showLightboxItem() {
@@ -407,6 +455,10 @@
   function closeLightbox() {
     lightbox.classList.remove('open');
     document.body.style.overflow = '';
+    if (lastFocusBeforeLightbox) {
+      lastFocusBeforeLightbox.focus();
+      lastFocusBeforeLightbox = null;
+    }
   }
 
   qs('#lightboxClose').addEventListener('click', closeLightbox);
@@ -433,6 +485,17 @@
     if (e.key === 'ArrowRight') {
       lightboxIndex = (lightboxIndex + 1) % lightboxItems.length;
       showLightboxItem();
+    }
+    if (e.key === 'Tab') {
+      var focusable = qsa('button', lightbox);
+      if (!focusable.length) return;
+      var first = focusable[0];
+      var last = focusable[focusable.length - 1];
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+      } else {
+        if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
     }
   });
 
