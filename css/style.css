@@ -29,7 +29,6 @@
 }
 
 html {
-  scroll-behavior: smooth;
   scroll-padding-top: 70px;
   -webkit-font-smoothing: antialiased;
 }
@@ -212,10 +211,10 @@ a:hover { color: var(--text); }
   transform: translateY(
     calc(
       clamp(0.72rem, 1.8vh, 1.2rem) -
-      (var(--hero-text-progress) * clamp(1.1rem, 2.4vh, 1.7rem))
+      (var(--hero-text-progress) * clamp(1.6rem, 3.2vh, 2.4rem))
     )
   );
-  opacity: clamp(0, calc(1 - var(--hero-text-progress) * 1.9), 1);
+  opacity: clamp(0, calc(1 - var(--hero-text-progress) * 2.8), 1);
   pointer-events: none;
   z-index: 2;
 }
@@ -279,9 +278,11 @@ a:hover { color: var(--text); }
   position: absolute;
   width: 370px;
   height: 450px;
-  transition: all 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   cursor: pointer;
   transform-style: preserve-3d;
+  will-change: transform, opacity;
 }
 .gallery3d__frame {
   width: 100%;
