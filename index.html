@@ -5,6 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Katarina Sokolova — Digital Artist &amp; Illustrator</title>
   <meta name="description" content="Hand-crafted digital illustration by Katarina Sokolova. Fantasy, editorial, and publishing art. Corel Painter Master 2016.">
+
+  <!-- Social / Open Graph -->
+  <meta property="og:title" content="Katarina Sokolova — Digital Artist &amp; Illustrator">
+  <meta property="og:description" content="Hand-crafted digital illustration — fantasy, editorial, publishing. Corel Painter Master 2016.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://katarinasokolova.com">
+  <meta property="og:image" content="images/gallery-1.svg">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Theme & Favicon -->
+  <meta name="theme-color" content="#0a0a0c">
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -14,7 +27,7 @@
 
   <!-- Navigation -->
   <nav class="nav" id="nav">
-    <a href="#home" class="nav__logo">Katarina Sokolova</a>
+    <h1 class="nav__logo"><a href="#home">Katarina Sokolova</a></h1>
     <ul class="nav__links" id="navLinks">
       <li><a href="#home" data-section="home">Gallery</a></li>
       <li><a href="#portfolio" data-section="portfolio">Portfolio</a></li>
@@ -51,105 +64,37 @@
   <!-- ==================== HOME / GALLERY ==================== -->
   <section class="hero" id="home">
     <div class="hero__text">
-      <h1 class="hero__title">Katarina Sokolova</h1>
       <p class="hero__tagline">Hand-crafted digital illustration — fantasy, editorial, publishing</p>
     </div>
 
-    <!-- Desktop: 3D Gallery -->
+    <!--
+      Single gallery data source — JS builds both the desktop 3D view
+      and mobile card-stack from this list. Edit artwork here only once.
+    -->
+    <script type="application/json" id="galleryData">[
+      { "src": "images/gallery-1.svg", "alt": "Corel Painter Master Award 2016" },
+      { "src": "images/gallery-2.svg", "alt": "Red Forest's Fairy Tales" },
+      { "src": "images/gallery-3.svg", "alt": "Harley Quinn — Corel Painter Master Award" },
+      { "src": "images/gallery-4.svg", "alt": "Into the Woods II" },
+      { "src": "images/gallery-5.svg", "alt": "Truth Series — Kim Harrison Covers" },
+      { "src": "images/gallery-6.svg", "alt": "Passion Drives Your Way" },
+      { "src": "images/gallery-7.svg", "alt": "Blue Mermaid Puzzle — HEYE Germany" },
+      { "src": "images/gallery-8.svg", "alt": "Cinderella in Magnolia's Garden" }
+    ]</script>
+
+    <!-- Desktop: 3D Gallery (populated by JS) -->
     <div class="gallery3d" id="gallery3d">
       <div class="gallery3d__scene">
-        <div class="gallery3d__track" id="gallery3dTrack">
-          <div class="gallery3d__item" data-index="0">
-            <div class="gallery3d__frame">
-              <img src="images/gallery-1.svg" alt="Corel Painter Master Award 2016" loading="eager">
-              <div class="gallery3d__caption">Corel Painter Master Award 2016</div>
-            </div>
-          </div>
-          <div class="gallery3d__item" data-index="1">
-            <div class="gallery3d__frame">
-              <img src="images/gallery-2.svg" alt="Red Forest's Fairy Tales" loading="eager">
-              <div class="gallery3d__caption">Red Forest's Fairy Tales</div>
-            </div>
-          </div>
-          <div class="gallery3d__item" data-index="2">
-            <div class="gallery3d__frame">
-              <img src="images/gallery-3.svg" alt="Harley Queen — Corel Painter Master Award" loading="eager">
-              <div class="gallery3d__caption">Harley Queen — Corel Painter Master Award</div>
-            </div>
-          </div>
-          <div class="gallery3d__item" data-index="3">
-            <div class="gallery3d__frame">
-              <img src="images/gallery-4.svg" alt="Into the Woods II" loading="eager">
-              <div class="gallery3d__caption">Into the Woods II</div>
-            </div>
-          </div>
-          <div class="gallery3d__item" data-index="4">
-            <div class="gallery3d__frame">
-              <img src="images/gallery-5.svg" alt="Truth Series — Kim Harrison Covers" loading="eager">
-              <div class="gallery3d__caption">Truth Series — Kim Harrison Covers</div>
-            </div>
-          </div>
-          <div class="gallery3d__item" data-index="5">
-            <div class="gallery3d__frame">
-              <img src="images/gallery-6.svg" alt="Passion Drives Your Way" loading="eager">
-              <div class="gallery3d__caption">Passion Drives Your Way</div>
-            </div>
-          </div>
-          <div class="gallery3d__item" data-index="6">
-            <div class="gallery3d__frame">
-              <img src="images/gallery-7.svg" alt="Blue Mermaid Puzzle — HEYE Germany" loading="eager">
-              <div class="gallery3d__caption">Blue Mermaid Puzzle — HEYE Germany</div>
-            </div>
-          </div>
-          <div class="gallery3d__item" data-index="7">
-            <div class="gallery3d__frame">
-              <img src="images/gallery-8.svg" alt="Cinderella in Magnolia's Garden" loading="eager">
-              <div class="gallery3d__caption">Cinderella in Magnolia's Garden</div>
-            </div>
-          </div>
-        </div>
+        <div class="gallery3d__track" id="gallery3dTrack"></div>
       </div>
       <button class="gallery3d__nav gallery3d__nav--prev" id="gallery3dPrev" aria-label="Previous artwork">&lsaquo;</button>
       <button class="gallery3d__nav gallery3d__nav--next" id="gallery3dNext" aria-label="Next artwork">&rsaquo;</button>
       <div class="gallery3d__counter" id="gallery3dCounter">1 / 8</div>
     </div>
 
-    <!-- Mobile: Card Stack -->
+    <!-- Mobile: Card Stack (populated by JS) -->
     <div class="card-stack" id="cardStack">
-      <div class="card-stack__container" id="cardStackContainer">
-        <div class="card-stack__card" data-index="0">
-          <img src="images/gallery-1.svg" alt="Corel Painter Master Award 2016">
-          <div class="card-stack__caption">Corel Painter Master Award 2016</div>
-        </div>
-        <div class="card-stack__card" data-index="1">
-          <img src="images/gallery-2.svg" alt="Red Forest's Fairy Tales">
-          <div class="card-stack__caption">Red Forest's Fairy Tales</div>
-        </div>
-        <div class="card-stack__card" data-index="2">
-          <img src="images/gallery-3.svg" alt="Harley Queen — Corel Painter Master Award">
-          <div class="card-stack__caption">Harley Queen — Corel Painter Master Award</div>
-        </div>
-        <div class="card-stack__card" data-index="3">
-          <img src="images/gallery-4.svg" alt="Into the Woods II">
-          <div class="card-stack__caption">Into the Woods II</div>
-        </div>
-        <div class="card-stack__card" data-index="4">
-          <img src="images/gallery-5.svg" alt="Truth Series — Kim Harrison Covers">
-          <div class="card-stack__caption">Truth Series — Kim Harrison Covers</div>
-        </div>
-        <div class="card-stack__card" data-index="5">
-          <img src="images/gallery-6.svg" alt="Passion Drives Your Way">
-          <div class="card-stack__caption">Passion Drives Your Way</div>
-        </div>
-        <div class="card-stack__card" data-index="6">
-          <img src="images/gallery-7.svg" alt="Blue Mermaid Puzzle — HEYE Germany">
-          <div class="card-stack__caption">Blue Mermaid Puzzle — HEYE Germany</div>
-        </div>
-        <div class="card-stack__card" data-index="7">
-          <img src="images/gallery-8.svg" alt="Cinderella in Magnolia's Garden">
-          <div class="card-stack__caption">Cinderella in Magnolia's Garden</div>
-        </div>
-      </div>
+      <div class="card-stack__container" id="cardStackContainer"></div>
       <div class="card-stack__dots" id="cardStackDots"></div>
     </div>
 
@@ -448,7 +393,7 @@
   </footer>
 
   <!-- Lightbox -->
-  <div class="lightbox" id="lightbox">
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Artwork viewer">
     <button class="lightbox__close" id="lightboxClose" aria-label="Close">&times;</button>
     <button class="lightbox__nav lightbox__nav--prev" id="lightboxPrev" aria-label="Previous">&lsaquo;</button>
     <button class="lightbox__nav lightbox__nav--next" id="lightboxNext" aria-label="Next">&rsaquo;</button>
