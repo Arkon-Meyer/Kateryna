@@ -159,7 +159,7 @@
       title: clamp01(scrollY / 170),
       bar: clamp01(scrollY / 160),
       links: clamp01((scrollY - 72) / 128),
-      heroText: clamp01((scrollY - 8) / 250)
+      heroText: clamp01(scrollY / 140)
     };
   }
 
@@ -223,6 +223,26 @@
   })();
 
   /* ==========================================
+     NAV LINK SCROLLING — instant interrupt
+     Clicking a nav link immediately scrolls to
+     the target, even if a previous scroll is
+     still in momentum. Uses JS scrollTo to
+     bypass CSS scroll-behavior queuing.
+     ========================================== */
+  qsa('a[href^="#"]').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      var targetId = link.getAttribute('href');
+      if (!targetId || targetId === '#') return;
+      var target = qs(targetId);
+      if (!target) return;
+      e.preventDefault();
+      var scrollPadding = parseInt(getComputedStyle(document.documentElement).scrollPaddingTop, 10) || 0;
+      var targetY = target.getBoundingClientRect().top + window.scrollY - scrollPadding;
+      window.scrollTo({ top: targetY, behavior: 'smooth' });
+    });
+  });
+
+  /* ==========================================
      DESKTOP 3D GALLERY
      ========================================== */
   var gallery3d = qs('#gallery3d');
@@ -233,15 +253,23 @@
     var counter = qs('#gallery3dCounter');
     var last3dSwipeAt = 0;
 
-    function position3dGallery() {
+    function position3dGallery(skipTransition) {
       items.forEach(function (item, i) {
         var offset = i - currentIndex;
         item.classList.remove('center');
 
+        if (skipTransition) {
+          item.style.transition = 'none';
+        } else {
+          item.style.transition = '';
+        }
+
+        var newZ = offset === 0 ? 10 : Math.max(1, 5 - Math.abs(offset));
+        item.style.zIndex = String(newZ);
+
         if (offset === 0) {
           item.style.transform = 'translateX(0) translateZ(0) scale(1)';
           item.style.opacity = '1';
-          item.style.zIndex = '10';
           item.classList.add('center');
         } else {
           var x = offset * 320;
@@ -250,7 +278,6 @@
           var o = Math.max(0.2, 1 - Math.abs(offset) * 0.3);
           item.style.transform = 'translateX(' + x + 'px) translateZ(' + z + 'px) scale(' + s + ')';
           item.style.opacity = String(o);
-          item.style.zIndex = String(5 - Math.abs(offset));
         }
       });
       if (counter) {
@@ -308,7 +335,7 @@
       }
     });
 
-    position3dGallery();
+    position3dGallery(true);
   }
 
   /* ==========================================
