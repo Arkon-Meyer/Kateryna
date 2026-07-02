@@ -1198,6 +1198,84 @@ a:hover { color: var(--text); }
   .portfolio__item:hover img { transform: none; }
 }
 
+/* ============================================
+   IMAGE LOADING SHIMMER
+   ============================================ */
+.img-loading {
+  position: relative;
+  overflow: hidden;
+}
+.img-loading::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    var(--bg-card) 30%,
+    rgba(255,255,255,0.04) 50%,
+    var(--bg-card) 70%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+  z-index: 1;
+  pointer-events: none;
+}
+.img-loaded::after {
+  display: none;
+}
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ============================================
+   LIGHTBOX CROSSFADE
+   ============================================ */
+.lightbox__content img {
+  transition: opacity 0.3s ease;
+}
+.lightbox__content img.fading {
+  opacity: 0.2;
+}
+
+/* ============================================
+   PRINT STYLESHEET
+   ============================================ */
+@media print {
+  :root {
+    --bg: #fff;
+    --bg-subtle: #f8f8f8;
+    --bg-card: #f0f0f0;
+    --text: #111;
+    --text-muted: #444;
+    --text-dim: #888;
+    --accent: #8a6d2b;
+    --border: #ddd;
+  }
+  body {
+    background: #fff;
+    color: #111;
+    overflow: visible;
+  }
+  .nav, .mobile-tab-bar, .hero__scroll,
+  .gallery3d__nav, .card-stack__dots,
+  .lightbox, .portfolio__filters {
+    display: none !important;
+  }
+  .hero { min-height: auto; padding: 2rem 1rem; }
+  .gallery3d { display: none !important; }
+  .card-stack { display: none !important; }
+  .portfolio__grid { gap: 0.5rem; }
+  .portfolio__overlay { opacity: 1; background: rgba(255,255,255,0.85); }
+  .portfolio__overlay h3 { color: #111; }
+  .portfolio__item { border: 1px solid #ddd; break-inside: avoid; }
+  .process { background: #f8f8f8; }
+  .contact { background: #f8f8f8; }
+  section { break-inside: avoid; }
+  a { color: #111; }
+  a::after { display: none !important; }
+}
+
 /* Placeholder images — gradient backgrounds when images are missing */
 img[src$=".svg"]:not([src*="http"]) {
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
