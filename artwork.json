@@ -1,0 +1,150 @@
+[
+  {
+    "id": "corel_painter_master_2016",
+    "file": "gallery-1",
+    "title": "Corel Painter Master Award 2016",
+    "category": "editorial",
+    "year": 2016,
+    "featured": true
+  },
+  {
+    "id": "red_forest_fairy_tales",
+    "file": "gallery-2",
+    "title": "Red Forest's Fairy Tales",
+    "category": "fantasy",
+    "year": 2014,
+    "featured": true
+  },
+  {
+    "id": "harley_quinn",
+    "file": "gallery-3",
+    "title": "Harley Quinn — Corel Painter Master Award",
+    "category": "editorial",
+    "year": 2016,
+    "featured": true
+  },
+  {
+    "id": "into_the_woods_ii",
+    "file": "gallery-4",
+    "title": "Into the Woods II",
+    "category": "fantasy",
+    "year": 2013,
+    "featured": true
+  },
+  {
+    "id": "truth_series",
+    "file": "gallery-5",
+    "title": "Truth Series — Kim Harrison",
+    "category": "book-covers",
+    "year": 2011,
+    "featured": true
+  },
+  {
+    "id": "passion_drives_your_way",
+    "file": "gallery-6",
+    "title": "Passion Drives Your Way",
+    "category": "personal",
+    "year": 2015,
+    "featured": true
+  },
+  {
+    "id": "blue_mermaid_puzzle",
+    "file": "gallery-7",
+    "title": "Blue Mermaid Puzzle — HEYE Germany",
+    "category": "editorial",
+    "year": 2014,
+    "featured": true
+  },
+  {
+    "id": "cinderella_magnolia",
+    "file": "gallery-8",
+    "title": "Cinderella in Magnolia's Garden",
+    "category": "fantasy",
+    "year": 2013,
+    "featured": true
+  },
+  {
+    "id": "tempest_series",
+    "file": "gallery-1",
+    "title": "Tempest Series — Tracy Deebs",
+    "category": "book-covers",
+    "year": 2012
+  },
+  {
+    "id": "obscure_art_calendar",
+    "file": "gallery-4",
+    "title": "Obscure Art Calendar — HEYE",
+    "category": "editorial",
+    "year": 2015
+  },
+  {
+    "id": "animal_project_iii",
+    "file": "gallery-2",
+    "title": "Animal Project Vol. III",
+    "category": "personal",
+    "year": 2012
+  },
+  {
+    "id": "last_kingdom",
+    "file": "gallery-6",
+    "title": "Last Kingdom — Cover",
+    "category": "book-covers",
+    "year": 2013
+  },
+  {
+    "id": "insomnia_calendar",
+    "file": "gallery-3",
+    "title": "Insomnia Art Calendar — HEYE",
+    "category": "editorial",
+    "year": 2015
+  },
+  {
+    "id": "im_your_angel",
+    "file": "gallery-5",
+    "title": "I'm Your Angel — HEYE Puzzle",
+    "category": "editorial",
+    "year": 2014
+  },
+  {
+    "id": "bloody_kiss",
+    "file": "gallery-8",
+    "title": "Bloody Kiss — Norma Editorial",
+    "category": "book-covers",
+    "year": 2010
+  },
+  {
+    "id": "diary_2015",
+    "file": "gallery-7",
+    "title": "Diary 2015 — Carousel Calendar",
+    "category": "editorial",
+    "year": 2015
+  },
+  {
+    "id": "calendar_2016",
+    "file": "gallery-1",
+    "title": "Calendar 2016 — Carousel Calendar",
+    "category": "editorial",
+    "year": 2016
+  },
+  {
+    "id": "red_portrait_apple",
+    "file": "gallery-4",
+    "title": "Red Portrait with Apple",
+    "category": "personal",
+    "year": 2013
+  },
+  {
+    "id": "a_day_in_the_life",
+    "file": "gallery-6",
+    "title": "A Day in the Life",
+    "category": "personal",
+    "year": 2012
+  },
+  {
+    "id": "animal_project_ii",
+    "file": "gallery-2",
+    "title": "Animal Project Vol. II",
+    "category": "personal",
+    "year": 2011
+  }
+]
