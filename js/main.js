@@ -65,46 +65,198 @@
   }
 
   /* ==========================================
-     GALLERY DATA — single source of truth
+     ARTWORK MANIFEST — loaded from artwork.json
+     Drives hero gallery, portfolio grid, and
+     rotation logic from a single data source.
      ========================================== */
+  var allArtwork = [];
+  var heroArtwork = [];
   var galleryData = [];
-  var dataEl = qs('#galleryData');
-  if (dataEl) {
-    try { galleryData = JSON.parse(dataEl.textContent); } catch (e) { /* ignore */ }
+
+  var ITEMS_PER_PAGE = 12;
+  var portfolioPage = 0;
+  var currentFilter = 'all';
+
+  function artworkImgSrc(item) {
+    return 'images/artwork/' + item.file + '.webp';
   }
 
-  function buildDesktopGallery() {
+  function artworkThumbSrc(item) {
+    return 'images/artwork/' + item.file + '_thumb.webp';
+  }
+
+  function artworkFallbackSrc(item) {
+    return 'images/' + item.file + '.svg';
+  }
+
+  function imgSrc(item) {
+    return artworkFallbackSrc(item);
+  }
+
+  function thumbSrc(item) {
+    return artworkFallbackSrc(item);
+  }
+
+  /* --- View tracking (localStorage) --- */
+  var VIEW_KEY = 'ks_views';
+  var ROTATION_KEY = 'ks_rotation_ts';
+  var ROTATION_DAYS = 21;
+
+  function getViewCounts() {
+    try { return JSON.parse(localStorage.getItem(VIEW_KEY)) || {}; } catch (e) { return {}; }
+  }
+
+  function recordView(id) {
+    var counts = getViewCounts();
+    counts[id] = (counts[id] || 0) + 1;
+    try { localStorage.setItem(VIEW_KEY, JSON.stringify(counts)); } catch (e) { /* ignore */ }
+  }
+
+  function selectHeroArtwork(artwork) {
+    var featured = artwork.filter(function (a) { return a.featured; });
+    if (featured.length >= 6) return featured.slice(0, 8);
+
+    var lastRotation = 0;
+    try { lastRotation = parseInt(localStorage.getItem(ROTATION_KEY), 10) || 0; } catch (e) {}
+    var now = Date.now();
+    var daysSince = (now - lastRotation) / (1000 * 60 * 60 * 24);
+
+    if (daysSince >= ROTATION_DAYS || lastRotation === 0) {
+      try { localStorage.setItem(ROTATION_KEY, String(now)); } catch (e) {}
+      var counts = getViewCounts();
+      var sorted = artwork.slice().sort(function (a, b) {
+        return (counts[b.id] || 0) - (counts[a.id] || 0);
+      });
+      return sorted.slice(0, 8);
+    }
+
+    if (featured.length > 0) return featured.slice(0, 8);
+    return artwork.slice(0, 8);
+  }
+
+  function buildDesktopGallery(items) {
     var track = qs('#gallery3dTrack');
     if (!track) return;
-    galleryData.forEach(function (item, i) {
+    track.innerHTML = '';
+    items.forEach(function (item, i) {
       var div = document.createElement('div');
       div.className = 'gallery3d__item';
       div.dataset.index = String(i);
+      div.dataset.artId = item.id;
       div.innerHTML =
         '<div class="gallery3d__frame">' +
-          '<img src="' + item.src + '" alt="' + item.alt + '"' + (i < 3 ? ' loading="eager"' : ' loading="lazy"') + '>' +
-          '<div class="gallery3d__caption">' + item.alt + '</div>' +
+          '<img src="' + imgSrc(item) + '" alt="' + item.title + '"' + (i < 3 ? ' loading="eager"' : ' loading="lazy"') + '>' +
+          '<div class="gallery3d__caption">' + item.title + '</div>' +
         '</div>';
       track.appendChild(div);
     });
   }
 
-  function buildMobileCardStack() {
+  function buildMobileCardStack(items) {
     var container = qs('#cardStackContainer');
     if (!container) return;
-    galleryData.forEach(function (item, i) {
+    container.innerHTML = '';
+    items.forEach(function (item, i) {
       var div = document.createElement('div');
       div.className = 'card-stack__card';
       div.dataset.index = String(i);
+      div.dataset.artId = item.id;
       div.innerHTML =
-        '<img src="' + item.src + '" alt="' + item.alt + '">' +
-        '<div class="card-stack__caption">' + item.alt + '</div>';
+        '<img src="' + imgSrc(item) + '" alt="' + item.title + '">' +
+        '<div class="card-stack__caption">' + item.title + '</div>';
       container.appendChild(div);
     });
   }
 
-  buildDesktopGallery();
-  buildMobileCardStack();
+  /* --- Portfolio grid rendering --- */
+  var CATEGORY_LABELS = {
+    'book-covers': 'Book Covers',
+    'fantasy': 'Fantasy',
+    'editorial': 'Editorial',
+    'personal': 'Personal'
+  };
+
+  function getFilteredArtwork() {
+    if (currentFilter === 'all') return allArtwork;
+    return allArtwork.filter(function (a) { return a.category === currentFilter; });
+  }
+
+  function renderPortfolioPage() {
+    var grid = qs('#portfolioGrid');
+    if (!grid) return;
+    var filtered = getFilteredArtwork();
+    var end = (portfolioPage + 1) * ITEMS_PER_PAGE;
+    var visible = filtered.slice(0, end);
+
+    grid.innerHTML = '';
+    visible.forEach(function (item) {
+      var div = document.createElement('div');
+      div.className = 'portfolio__item reveal';
+      div.dataset.category = item.category;
+      div.dataset.artId = item.id;
+      div.innerHTML =
+        '<img src="' + thumbSrc(item) + '" alt="' + item.title + '" loading="lazy">' +
+        '<div class="portfolio__overlay">' +
+          '<h3>' + item.title + '</h3>' +
+          '<span>' + (CATEGORY_LABELS[item.category] || item.category) + '</span>' +
+        '</div>';
+      grid.appendChild(div);
+    });
+
+    var loadMoreWrap = qs('#loadMoreWrap');
+    if (loadMoreWrap) {
+      loadMoreWrap.classList.toggle('hidden', end >= filtered.length);
+    }
+
+    requestAnimationFrame(function () {
+      attachPortfolioClicks();
+      attachShimmer();
+      observeReveals();
+    });
+  }
+
+  function attachPortfolioClicks() {
+    qsa('.portfolio__item').forEach(function (item) {
+      item.addEventListener('click', function () {
+        var visibleItems = qsa('.portfolio__item');
+        var idx = visibleItems.indexOf(item);
+        var lightboxItems = visibleItems.map(function (el) {
+          var img = qs('img', el);
+          var artId = el.dataset.artId;
+          var artwork = allArtwork.find(function (a) { return a.id === artId; });
+          return { src: artwork ? imgSrc(artwork) : img.src, alt: img.alt, id: artId };
+        });
+        openLightbox(idx, lightboxItems);
+      });
+    });
+  }
+
+  /* --- Load artwork.json and initialize --- */
+  function initFromManifest(artwork) {
+    allArtwork = artwork;
+    heroArtwork = selectHeroArtwork(artwork);
+
+    galleryData = heroArtwork.map(function (a) {
+      return { src: imgSrc(a), alt: a.title, id: a.id };
+    });
+
+    buildDesktopGallery(heroArtwork);
+    buildMobileCardStack(heroArtwork);
+    renderPortfolioPage();
+    initDesktop3dGallery();
+    initMobileCardStack();
+    attachShimmer();
+  }
+
+  fetch('artwork.json')
+    .then(function (r) { return r.json(); })
+    .then(initFromManifest)
+    .catch(function () {
+      var fallback = [
+        { id: 'placeholder', file: 'gallery-1', title: 'Artwork', category: 'fantasy', year: 2020, featured: true }
+      ];
+      initFromManifest(fallback);
+    });
 
   /* ==========================================
      NAVIGATION
@@ -245,9 +397,11 @@
   /* ==========================================
      DESKTOP 3D GALLERY
      ========================================== */
+  function initDesktop3dGallery() {
   var gallery3d = qs('#gallery3d');
-  if (gallery3d) {
-    var items = qsa('.gallery3d__item');
+  if (!gallery3d) return;
+  var items = qsa('.gallery3d__item');
+  if (!items.length) return;
     var totalItems = items.length;
     var currentIndex = 0;
     var counter = qs('#gallery3dCounter');
@@ -298,7 +452,9 @@
         if (Date.now() - last3dSwipeAt < 320) return;
         var idx = parseInt(item.dataset.index, 10);
         if (idx === currentIndex) {
-          openLightbox(idx, galleryData);
+          openLightbox(idx, galleryData.map(function (g) {
+            return { src: g.src, alt: g.alt, id: g.id };
+          }));
         } else {
           goTo3d(idx);
         }
@@ -391,9 +547,11 @@
   /* ==========================================
      MOBILE CARD STACK
      ========================================== */
+  function initMobileCardStack() {
   var cardStack = qs('#cardStack');
-  if (cardStack) {
-    var cards = qsa('.card-stack__card');
+  if (!cardStack) return;
+  var cards = qsa('.card-stack__card');
+  if (!cards.length) return;
     var dotsContainer = qs('#cardStackDots');
     var mobileIndex = 0;
     var touchStartX = 0;
@@ -457,47 +615,25 @@
   }
 
   /* ==========================================
-     PORTFOLIO FILTERS
+     PORTFOLIO FILTERS + LOAD MORE
      ========================================== */
-  var filterBtns = qsa('.portfolio__filter');
-  var portfolioItems = qsa('.portfolio__item');
-  var filterHideTimers = [];
-
-  filterBtns.forEach(function (btn) {
+  qsa('.portfolio__filter').forEach(function (btn) {
     btn.addEventListener('click', function () {
-      filterBtns.forEach(function (b) { b.classList.remove('active'); });
+      qsa('.portfolio__filter').forEach(function (b) { b.classList.remove('active'); });
       btn.classList.add('active');
-      var filter = btn.dataset.filter;
-
-      filterHideTimers.forEach(function (id) { clearTimeout(id); });
-      filterHideTimers.length = 0;
-
-      portfolioItems.forEach(function (item) {
-        if (filter === 'all' || item.dataset.category === filter) {
-          item.classList.remove('hiding');
-          item.style.display = '';
-        } else {
-          item.classList.add('hiding');
-          var timerId = setTimeout(function () { item.style.display = 'none'; }, 400);
-          filterHideTimers.push(timerId);
-        }
-      });
+      currentFilter = btn.dataset.filter;
+      portfolioPage = 0;
+      renderPortfolioPage();
     });
   });
 
-  /* Portfolio lightbox on click */
-  portfolioItems.forEach(function (item, i) {
-    item.addEventListener('click', function () {
-      var visibleItems = portfolioItems.filter(function (it) {
-        return !it.classList.contains('hiding');
-      });
-      var visibleIndex = visibleItems.indexOf(item);
-      openLightbox(visibleIndex, visibleItems.map(function (it) {
-        var img = qs('img', it);
-        return { src: img.src, alt: img.alt };
-      }));
+  var loadMoreBtn = qs('#loadMoreBtn');
+  if (loadMoreBtn) {
+    loadMoreBtn.addEventListener('click', function () {
+      portfolioPage++;
+      renderPortfolioPage();
     });
-  });
+  }
 
   /* ==========================================
      LIGHTBOX
@@ -524,6 +660,7 @@
   function showLightboxItem(animate) {
     var item = lightboxItems[lightboxIndex];
     if (!item) return;
+    if (item.id) recordView(item.id);
     if (animate) {
       lightboxImg.classList.add('fading');
       setTimeout(function () {
@@ -601,36 +738,45 @@
   });
 
   /* ==========================================
-     PROCESS STAGES
+     BEFORE/AFTER COMPARE SLIDER
      ========================================== */
-  var processStages = qsa('.process__stage');
-  var progressSteps = qsa('.process__progress-step');
-  var progressBar = qs('#processProgressBar');
-  var activeProcessStage = 0;
+  var compare = qs('#processCompare');
+  if (compare) {
+    var sketchLayer = qs('#processSketchLayer');
+    var handle = qs('#processHandle');
+    var dragging = false;
 
-  function setProcessStage(index) {
-    activeProcessStage = index;
-    processStages.forEach(function (stage, i) {
-      stage.classList.toggle('active', i === index);
-    });
-    progressSteps.forEach(function (step, i) {
-      step.classList.toggle('active', i === index);
-    });
-    if (progressBar) {
-      progressBar.dataset.progress = String(index);
+    function setComparePosition(pct) {
+      pct = Math.max(2, Math.min(pct, 98));
+      sketchLayer.style.clipPath = 'inset(0 ' + (100 - pct) + '% 0 0)';
+      handle.style.left = pct + '%';
     }
-  }
 
-  processStages.forEach(function (stage, i) {
-    stage.addEventListener('click', function () { setProcessStage(i); });
-  });
-  progressSteps.forEach(function (step) {
-    step.addEventListener('click', function () {
-      setProcessStage(parseInt(step.dataset.step, 10));
+    function getPercent(clientX) {
+      var rect = compare.getBoundingClientRect();
+      return ((clientX - rect.left) / rect.width) * 100;
+    }
+
+    compare.addEventListener('mousedown', function (e) {
+      dragging = true;
+      setComparePosition(getPercent(e.clientX));
     });
-  });
+    document.addEventListener('mousemove', function (e) {
+      if (!dragging) return;
+      setComparePosition(getPercent(e.clientX));
+    });
+    document.addEventListener('mouseup', function () { dragging = false; });
 
-  setProcessStage(0);
+    compare.addEventListener('touchstart', function (e) {
+      dragging = true;
+      if (e.touches.length) setComparePosition(getPercent(e.touches[0].clientX));
+    }, { passive: true });
+    compare.addEventListener('touchmove', function (e) {
+      if (!dragging || !e.touches.length) return;
+      setComparePosition(getPercent(e.touches[0].clientX));
+    }, { passive: true });
+    compare.addEventListener('touchend', function () { dragging = false; }, { passive: true });
+  }
 
   /* ==========================================
      PORTFOLIO FILTER KEYBOARD NAVIGATION
@@ -653,23 +799,15 @@
   }
 
   /* ==========================================
-     SCROLL REVEAL (with staggered portfolio)
+     SCROLL REVEAL (re-attachable for dynamic content)
      ========================================== */
-  var standardReveals = qsa('.section-header, .process__piece, .process__tool, .about__content, .about__awards, .about__clients, .contact__content');
-  standardReveals.forEach(function (el) { el.classList.add('reveal'); });
-
-  var portfolioRevealItems = qsa('.portfolio__item');
-  portfolioRevealItems.forEach(function (el) { el.classList.add('reveal'); });
-
-  var observer = new IntersectionObserver(function (entries) {
+  var revealObserver = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
       }
     });
   }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-
-  standardReveals.forEach(function (el) { observer.observe(el); });
 
   var staggerObserver = new IntersectionObserver(function (entries) {
     var newVisible = entries.filter(function (e) { return e.isIntersecting && !e.target.classList.contains('visible'); });
@@ -681,21 +819,35 @@
     });
   }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
 
-  portfolioRevealItems.forEach(function (el) { staggerObserver.observe(el); });
+  function observeReveals() {
+    qsa('.portfolio__item.reveal:not(.visible)').forEach(function (el) {
+      staggerObserver.observe(el);
+    });
+  }
+
+  qsa('.section-header, .process__story, .about__content, .about__awards, .about__work-highlights, .contact__content').forEach(function (el) {
+    el.classList.add('reveal');
+    revealObserver.observe(el);
+  });
 
   /* ==========================================
-     IMAGE LOAD SHIMMER
+     IMAGE LOAD SHIMMER (re-attachable)
      ========================================== */
-  qsa('.portfolio__item, .gallery3d__frame, .card-stack__card, .process__stage-img, .about__photo').forEach(function (el) {
-    el.classList.add('img-loading');
-    var img = qs('img', el);
-    if (!img) return;
-    if (img.complete && img.naturalWidth > 0) {
-      el.classList.add('img-loaded');
-    } else {
-      img.addEventListener('load', function () { el.classList.add('img-loaded'); });
-      img.addEventListener('error', function () { el.classList.add('img-loaded'); });
-    }
-  });
+  function attachShimmer() {
+    qsa('.portfolio__item, .gallery3d__frame, .card-stack__card, .process__compare, .about__photo').forEach(function (el) {
+      if (el.classList.contains('img-loading') || el.classList.contains('img-loaded')) return;
+      el.classList.add('img-loading');
+      var img = qs('img', el);
+      if (!img) return;
+      if (img.complete && img.naturalWidth > 0) {
+        el.classList.add('img-loaded');
+      } else {
+        img.addEventListener('load', function () { el.classList.add('img-loaded'); });
+        img.addEventListener('error', function () { el.classList.add('img-loaded'); });
+      }
+    });
+  }
+
+  attachShimmer();
 
 })();
